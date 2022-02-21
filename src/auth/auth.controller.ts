@@ -7,11 +7,12 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
-import { Request } from 'express';
-import { GetCurrentUser } from 'src/common/decorators';
-import { GetCurrentUserId } from 'src/common/decorators/get-current-user-id.decorator';
-import { accessTokenGuard, refreshTokenGuard } from 'src/common/guards';
+import {
+  GetCurrentUser,
+  GetCurrentUserId,
+  PublicRoute,
+} from 'src/common/decorators';
+import { refreshTokenGuard } from 'src/common/guards';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
 import { Tokens } from './types';
@@ -20,25 +21,27 @@ import { Tokens } from './types';
 export class AuthController {
   constructor(private authService: AuthService) {}
   //local: username/password auth, not implementing third party signup eg google
+  @PublicRoute()
   @Post('/local/signup')
   @HttpCode(HttpStatus.CREATED)
   signUpLocal(@Body() dto: AuthDto): Promise<Tokens> {
     return this.authService.signUpLocal(dto);
   }
 
+  @PublicRoute()
   @Post('/local/signin')
   @HttpCode(HttpStatus.OK)
   signInLocal(@Body() dto: AuthDto): Promise<Tokens> {
     return this.authService.signInLocal(dto);
   }
 
-  @UseGuards(accessTokenGuard)
   @Post('/logout')
   @HttpCode(HttpStatus.OK)
   logout(@GetCurrentUserId() userId: number) {
     return this.authService.logout(userId);
   }
 
+  @PublicRoute()
   @UseGuards(refreshTokenGuard)
   @Post('/refresh')
   @HttpCode(HttpStatus.OK)
@@ -46,6 +49,10 @@ export class AuthController {
     @GetCurrentUserId() userId: number,
     @GetCurrentUser('refreshToken') refreshToken: string,
   ): Promise<Tokens> {
+    console.log({
+      userId,
+      refreshToken,
+    });
     return this.authService.refreshTokens(userId, refreshToken);
   }
 }
