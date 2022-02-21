@@ -6,15 +6,16 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AuthDto } from './dto';
-import * as bcrypt from 'bcrypt';
 import { Tokens } from './types';
+import * as argon2 from 'argon2';
 
 @Injectable()
 export class AuthService {
   constructor(private prisma: PrismaService, private jwtService: JwtService) {}
 
-  hashData(data: string) {
-    return bcrypt.hash(data, 10);
+  async hashData(data: string) {
+    const hash = await argon2.hash(data);
+    return hash;
   }
 
   async getTokens(userId: number, email: string): Promise<Tokens> {
@@ -84,7 +85,8 @@ export class AuthService {
       throw new ForbiddenException('Access denied.');
     }
 
-    const passwordMatches = await bcrypt.compare(password, user.hash);
+    const passwordMatches = await argon2.verify(user.hash, password);
+    // const passwordMatches = await bcrypt.compare(password, user.hash);
 
     if (!passwordMatches) {
       throw new ForbiddenException('Access denied.');
@@ -122,7 +124,7 @@ export class AuthService {
       throw new ForbiddenException('Access denied');
     }
 
-    const rtMatch = await bcrypt.compare(refreshToken, user.hashedRt);
+    const rtMatch = await argon2.verify(user.hashedRt, refreshToken);
 
     if (!rtMatch) {
       throw new ForbiddenException('Access denied');
