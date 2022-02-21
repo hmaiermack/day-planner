@@ -1,7 +1,7 @@
 import {
   ForbiddenException,
   Injectable,
-  NotFoundException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -14,21 +14,25 @@ export class AuthService {
   constructor(private prisma: PrismaService, private jwtService: JwtService) {}
 
   async hashData(data: string) {
-    const hash = await argon2.hash(data);
-    return hash;
+    try {
+      const hash = await argon2.hash(data);
+      return hash;
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
   }
 
-  async getTokens(userId: number, email: string): Promise<Tokens> {
+  async getTokens(userId: number): Promise<Tokens> {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
-        { sub: userId, email },
+        { sub: userId },
         {
           expiresIn: '15m',
           secret: 'access_token_secret',
         },
       ),
       this.jwtService.signAsync(
-        { sub: userId, email },
+        { sub: userId },
         {
           expiresIn: '7d',
           secret: 'refresh_token_secret',
@@ -66,7 +70,7 @@ export class AuthService {
       },
     });
 
-    const tokens = await this.getTokens(newUser.id, newUser.email);
+    const tokens = await this.getTokens(newUser.id);
 
     await this.updateRefreshTokenHash(newUser.id, tokens.refresh_token);
 
@@ -92,7 +96,7 @@ export class AuthService {
       throw new ForbiddenException('Access denied.');
     }
 
-    const tokens = await this.getTokens(user.id, user.email);
+    const tokens = await this.getTokens(user.id);
 
     await this.updateRefreshTokenHash(user.id, tokens.refresh_token);
 
@@ -130,7 +134,7 @@ export class AuthService {
       throw new ForbiddenException('Access denied');
     }
 
-    const tokens = await this.getTokens(user.id, user.email);
+    const tokens = await this.getTokens(user.id);
 
     await this.updateRefreshTokenHash(user.id, tokens.refresh_token);
 
