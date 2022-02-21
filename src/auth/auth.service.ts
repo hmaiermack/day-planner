@@ -22,14 +22,14 @@ export class AuthService {
       this.jwtService.signAsync(
         { sub: userId, email },
         {
-          expiresIn: 60 * 15,
+          expiresIn: '15m',
           secret: 'access_token_secret',
         },
       ),
       this.jwtService.signAsync(
         { sub: userId, email },
         {
-          expiresIn: 60 * 60 * 24 * 7,
+          expiresIn: '7d',
           secret: 'refresh_token_secret',
         },
       ),
