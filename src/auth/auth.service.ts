@@ -46,7 +46,10 @@ export class AuthService {
     };
   }
 
-  async updateRefreshTokenHash(userId: number, refreshToken: string) {
+  async updateRefreshTokenHash(
+    userId: number,
+    refreshToken: string,
+  ): Promise<void> {
     const hash = await this.hashData(refreshToken);
     await this.prisma.user.update({
       where: {
@@ -103,7 +106,7 @@ export class AuthService {
     return tokens;
   }
 
-  async logout(userId: number) {
+  async logout(userId: number): Promise<boolean> {
     await this.prisma.user.updateMany({
       where: {
         id: userId,
@@ -115,9 +118,11 @@ export class AuthService {
         hashedRt: null,
       },
     });
+
+    return true;
   }
 
-  async refreshTokens(userId: number, refreshToken: string) {
+  async refreshTokens(userId: number, refreshToken: string): Promise<Tokens> {
     const user = await this.prisma.user.findUnique({
       where: {
         id: userId,
