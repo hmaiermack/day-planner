@@ -4,15 +4,14 @@ import {
   HttpCode,
   HttpStatus,
   Post,
-  Req,
   UseGuards,
 } from '@nestjs/common';
 import {
   GetCurrentUser,
   GetCurrentUserId,
   PublicRoute,
-} from 'src/common/decorators';
-import { refreshTokenGuard } from 'src/common/guards';
+} from '../common/decorators';
+import { refreshTokenGuard } from '../common/guards';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
 import { Tokens } from './types';

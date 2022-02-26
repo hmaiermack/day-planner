@@ -1,7 +1,6 @@
 import { ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
-import { Observable } from 'rxjs';
 
 @Injectable()
 export class accessTokenGuard extends AuthGuard('jwt') {
@@ -9,9 +8,7 @@ export class accessTokenGuard extends AuthGuard('jwt') {
     super();
   }
 
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
+  canActivate(context: ExecutionContext) {
     const isPublic = this.reflector.getAllAndOverride('isPublic', [
       context.getHandler(),
       context.getClass(),
@@ -20,6 +17,8 @@ export class accessTokenGuard extends AuthGuard('jwt') {
     if (isPublic) {
       return true;
     }
+
+    console.log({ context });
 
     return super.canActivate(context);
   }

@@ -5,12 +5,11 @@ import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
   imports: [
-    AuthModule,
-    PrismaModule,
     ConfigModule.forRoot({
-      envFilePath: [`.env.stage.${process.env.STAGE}`],
       isGlobal: true,
     }),
+    AuthModule,
+    PrismaModule,
   ],
   controllers: [],
   providers: [],
