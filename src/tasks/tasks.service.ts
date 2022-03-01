@@ -15,6 +15,37 @@ export class TasksService {
   async createTask(userId: number, dto: NewTaskDto) {
     const tag = dto.tag;
 
+    if (tag) {
+      const task = await this.prisma.task.create({
+        data: {
+          user: {
+            connect: {
+              id: userId,
+            },
+          },
+          title: dto.title,
+          timeStart: dto.timeStart,
+          timeEnd: dto.timeEnd,
+          tag: {
+            connectOrCreate: {
+              where: {
+                name: tag.name,
+              },
+              create: {
+                name: tag.name,
+                colorHexValue: tag.colorHexValue,
+              },
+            },
+          },
+        },
+        include: {
+          tag: true,
+        },
+      });
+
+      return task;
+    }
+
     const task = await this.prisma.task.create({
       data: {
         user: {
@@ -25,17 +56,6 @@ export class TasksService {
         title: dto.title,
         timeStart: dto.timeStart,
         timeEnd: dto.timeEnd,
-        tag: {
-          connectOrCreate: {
-            where: {
-              name: tag.name,
-            },
-            create: {
-              name: tag.name,
-              colorHexValue: tag.colorHexValue,
-            },
-          },
-        },
       },
     });
 
