@@ -1,6 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { Task } from '@prisma/client';
-import { format, minTime, nextSaturday, previousSunday } from 'date-fns';
+import {
+  endOfDay,
+  format,
+  minTime,
+  nextSaturday,
+  previousSunday,
+  startOfDay,
+} from 'date-fns';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { DeleteTaskDto } from './dto/deleteTask.dto';
 import { NewTaskDto } from './dto/newTask.dto';
@@ -12,14 +19,8 @@ export class TasksService {
   async getTasksForCurrentWeek(userId: number) {
     const now = Date.now();
 
-    const weekStart = previousSunday(now);
-    const weekEnd = nextSaturday(now);
-
-    console.log({
-      now,
-      weekStart,
-      weekEnd,
-    });
+    const weekStart = startOfDay(previousSunday(now));
+    const weekEnd = endOfDay(nextSaturday(now));
 
     const tasks = await this.prisma.task.findMany({
       where: {
@@ -39,12 +40,10 @@ export class TasksService {
       },
     });
 
-    console.log(tasks);
-
     //create a nicely formatted object to send to the client
     let taskMap = {};
-    tasks.forEach((task, i) => {
-      const day = format(task.timeStart, 'iiii');
+    tasks.forEach((task) => {
+      const day = format(task.timeStart, 'eeee');
       if (!taskMap[day]) taskMap[day] = [];
       taskMap[`${day}`].push(task);
     });
