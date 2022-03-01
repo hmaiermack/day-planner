@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Task } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { NewTaskDto } from './dto/newTask.dto';
+import { UpdateTaskDto } from './dto/updateTask.dto';
 
 @Injectable()
 export class TasksService {
@@ -12,7 +13,7 @@ export class TasksService {
     return tasks;
   }
 
-  async createTask(userId: number, dto: NewTaskDto) {
+  async createTask(userId: number, dto: NewTaskDto): Promise<Task> {
     const tag = dto.tag;
 
     if (tag) {
@@ -60,5 +61,58 @@ export class TasksService {
     });
 
     return task;
+  }
+
+  async updateTask(dto: UpdateTaskDto): Promise<Task> {
+    const task = await this.prisma.task.findUnique({
+      where: {
+        id: dto.id,
+      },
+    });
+
+    if (dto.tag) {
+      const updatedTask = await this.prisma.task.update({
+        where: {
+          id: dto.id,
+        },
+        data: {
+          title: dto.title ? dto.title : task.title,
+          timeStart: dto.timeStart ? dto.timeStart : task.timeStart,
+          timeEnd: dto.timeEnd ? dto.timeEnd : task.timeEnd,
+          tag: {
+            upsert: {
+              create: {
+                name: dto.tag.name,
+                colorHexValue: dto.tag.colorHexValue,
+              },
+              update: {
+                name: dto.tag.name,
+                colorHexValue: dto.tag.colorHexValue,
+              },
+            },
+          },
+        },
+        include: {
+          tag: true,
+        },
+      });
+      return updatedTask;
+    }
+
+    const updatedTask = await this.prisma.task.update({
+      where: {
+        id: dto.id,
+      },
+      data: {
+        title: dto.title ? dto.title : task.title,
+        timeStart: dto.timeStart ? dto.timeStart : task.timeStart,
+        timeEnd: dto.timeEnd ? dto.timeEnd : task.timeEnd,
+      },
+      include: {
+        tag: true,
+      },
+    });
+
+    return updatedTask;
   }
 }

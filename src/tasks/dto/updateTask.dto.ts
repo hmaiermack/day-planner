@@ -1,22 +1,25 @@
 import {
   IsDateString,
-  IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
 import { TagDto } from './tag.dto';
 
-export class NewTaskDto {
-  @IsNotEmpty()
+export class UpdateTaskDto {
+  @IsNumber()
+  id: number;
+
+  @IsOptional()
   @IsString()
   title: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsDateString()
   timeStart: Date;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsDateString()
   timeEnd: Date;
 
