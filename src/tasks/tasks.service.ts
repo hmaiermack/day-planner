@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Task } from '@prisma/client';
+import { format, minTime, nextSaturday, previousSunday } from 'date-fns';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { DeleteTaskDto } from './dto/deleteTask.dto';
 import { NewTaskDto } from './dto/newTask.dto';
@@ -8,10 +9,47 @@ import { UpdateTaskDto } from './dto/updateTask.dto';
 @Injectable()
 export class TasksService {
   constructor(private prisma: PrismaService) {}
-  async getTasks() {
-    const tasks = await this.prisma.task.findMany();
+  async getTasksForCurrentWeek(userId: number) {
+    const now = Date.now();
 
-    return tasks;
+    const weekStart = previousSunday(now);
+    const weekEnd = nextSaturday(now);
+
+    console.log({
+      now,
+      weekStart,
+      weekEnd,
+    });
+
+    const tasks = await this.prisma.task.findMany({
+      where: {
+        userId,
+        timeStart: {
+          gte: weekStart,
+        },
+        timeEnd: {
+          lte: weekEnd,
+        },
+      },
+      include: {
+        tag: true,
+      },
+      orderBy: {
+        timeStart: 'asc',
+      },
+    });
+
+    console.log(tasks);
+
+    //create a nicely formatted object to send to the client
+    let taskMap = {};
+    tasks.forEach((task, i) => {
+      const day = format(task.timeStart, 'iiii');
+      if (!taskMap[day]) taskMap[day] = [];
+      taskMap[`${day}`].push(task);
+    });
+
+    return taskMap;
   }
 
   async createTask(userId: number, dto: NewTaskDto): Promise<Task> {

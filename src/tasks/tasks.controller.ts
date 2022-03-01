@@ -17,11 +17,10 @@ import { TasksService } from './tasks.service';
 export class TasksController {
   constructor(private tasksService: TasksService) {}
 
-  @PublicRoute()
   @Get()
-  getTasksForWeek() {
+  getTasksForCurrentWeek(@GetCurrentUserId() userId: number) {
     //not actually tasks for week
-    return this.tasksService.getTasks();
+    return this.tasksService.getTasksForCurrentWeek(userId);
   }
 
   @Post()
