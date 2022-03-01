@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Task } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { DeleteTaskDto } from './dto/deleteTask.dto';
 import { NewTaskDto } from './dto/newTask.dto';
 import { UpdateTaskDto } from './dto/updateTask.dto';
 
@@ -114,5 +115,15 @@ export class TasksService {
     });
 
     return updatedTask;
+  }
+
+  async deleteTask(dto: DeleteTaskDto) {
+    await this.prisma.task.delete({
+      where: {
+        id: dto.id,
+      },
+    });
+
+    return true;
   }
 }

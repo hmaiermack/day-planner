@@ -1,5 +1,14 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+} from '@nestjs/common';
 import { GetCurrentUserId, PublicRoute } from 'src/common/decorators';
+import { DeleteTaskDto } from './dto/deleteTask.dto';
 import { NewTaskDto } from './dto/newTask.dto';
 import { UpdateTaskDto } from './dto/updateTask.dto';
 import { TasksService } from './tasks.service';
@@ -23,5 +32,11 @@ export class TasksController {
   @Post('/update')
   updateTask(@Body() dto: UpdateTaskDto) {
     return this.tasksService.updateTask(dto);
+  }
+
+  @Delete()
+  @HttpCode(HttpStatus.NO_CONTENT)
+  deleteTask(@Body() dto: DeleteTaskDto) {
+    return this.tasksService.deleteTask(dto);
   }
 }
