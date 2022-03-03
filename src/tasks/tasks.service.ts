@@ -41,7 +41,11 @@ export class TasksService {
     });
 
     //create a nicely formatted object to send to the client
-    let taskMap = {};
+    //might as well initialize it with week start and end which will be needed client side
+    let taskMap = {
+      weekStart,
+      weekEnd,
+    };
     tasks.forEach((task) => {
       const day = format(task.timeStart, 'eeee');
       if (!taskMap[day]) taskMap[day] = [];

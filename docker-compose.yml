@@ -8,3 +8,11 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: candid55
       POSTGRES_DB: nestjs
+  test-db:
+    image: postgres:latest
+    ports:
+     - 5435:5433
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: candid55
+      POSTGRES_DB: nestjs
