@@ -14,13 +14,13 @@ export class NewTaskDto {
 
   @IsNotEmpty()
   @IsDateString()
-  timeStart: Date;
+  timeStart: string;
 
   @IsNotEmpty()
   @IsDateString()
-  timeEnd: Date;
+  timeEnd: string;
 
   @IsOptional()
   @ValidateNested()
-  tag: TagDto;
+  tag?: TagDto;
 }
