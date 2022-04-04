@@ -17,7 +17,7 @@ export class HabitsService {
         return habits
     }
 
-    async createHabit(userId: number, dto: NewHabitDto): Promise<Habit> {
+    async createNewHabit(userId: number, dto: NewHabitDto): Promise<Habit> {
         
         
         if(dto.remindTime) {
@@ -52,5 +52,21 @@ export class HabitsService {
         })
 
         return habit
+    }
+
+    async updateHabit(dto: UpdateHabitDto): Promise<Habit> {
+
+    }
+
+    async deleteHabit(habitId: number) {
+
+    }
+
+    async doHabit(userId: number, habitId: number) {
+
+    }
+
+    async undoHabit(habitId: number) {
+        
     }
 }
