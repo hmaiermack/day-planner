@@ -7,7 +7,7 @@ import {
   HttpStatus,
   Post,
 } from '@nestjs/common';
-import { GetCurrentUserId, PublicRoute } from 'src/common/decorators';
+import { GetCurrentUserId } from 'src/common/decorators';
 import { DeleteTaskDto } from './dto/deleteTask.dto';
 import { NewTaskDto } from './dto/newTask.dto';
 import { UpdateTaskDto } from './dto/updateTask.dto';

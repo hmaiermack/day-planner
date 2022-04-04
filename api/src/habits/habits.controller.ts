@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { GetCurrentUserId } from 'src/common/decorators';
+import { NewHabitDto } from './dto/newHabit.dto';
 import { HabitsService } from './habits.service';
 
 @Controller('habits')
