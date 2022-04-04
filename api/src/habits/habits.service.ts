@@ -7,6 +7,16 @@ import { NewHabitDto } from './dto/newHabit.dto';
 export class HabitsService {
     constructor(private prisma: PrismaService) {}
 
+    async getHabits(userId: number): Promise<Habit[]> {
+        const habits = await this.prisma.habit.findMany({
+            where: {
+                userId
+            }
+        })
+
+        return habits
+    }
+
     async createHabit(userId: number, dto: NewHabitDto): Promise<Habit> {
         
         
@@ -26,21 +36,21 @@ export class HabitsService {
             })
 
             return habit
-        } else {
-            const habit = await this.prisma.habit.create({
-                data: {
-                    user: {
-                        connect: {
-                            id: userId
-                        }
-                    },
-                    name: dto.name,
-                    habitDays: dto.habitDays,
-                }
-
-            })
-
-            return habit
         }
+
+        const habit = await this.prisma.habit.create({
+            data: {
+                user: {
+                    connect: {
+                        id: userId
+                    }
+                },
+                name: dto.name,
+                habitDays: dto.habitDays,
+            }
+
+        })
+
+        return habit
     }
 }
