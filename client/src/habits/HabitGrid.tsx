@@ -62,7 +62,7 @@ function HabitGrid () {
 
 
     return (
-        <div className=" w-full sm:w-6/12 md:w-5/12 bg-sky-400 p-4 flex flex-col justify-center items-center gap-1 rounded text-left">
+        <div className="max-h-80 w-full sm:w-6/12 md:w-5/12 bg-sky-400 p-4 flex flex-col justify-center items-center gap-1 rounded text-left">
             <div className="block text-left">
             <h2 className="font-semibold text-lg my-1">Habit Tracker</h2>
             <p className="font-light text-sm mb-4 text-left">See how  well you&#39;ve adhered to your habits in the past three months.</p>

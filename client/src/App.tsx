@@ -1,10 +1,11 @@
+import HabitContainer from 'habits/HabitContainer';
 import React from 'react';
 
 function App() {
-  return (
-    <div className="App">
-      hello world
-    </div>
+     return (
+       <div className='w-full p-4 mx-auto'>
+         <HabitContainer />
+       </div>
   );
 }
 

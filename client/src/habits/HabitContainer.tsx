@@ -4,7 +4,7 @@ import HabitList from "./HabitList"
 
 function HabitContainer() {
     return (
-        <div className="w-full p-8 flex flex-col flex-col-reverse sm:flex-row">
+        <div className="w-full flex flex-col-reverse sm:flex-row gap-4">
             <HabitList />
             <HabitGrid />
         </div>
