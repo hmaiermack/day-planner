@@ -1,0 +1,116 @@
+{
+    "weekStart": "2022-02-27T08:00:00.000Z",
+    "weekEnd": "2022-03-06T07:59:59.999Z",
+    "Sunday": [
+        {
+            "id": 14,
+            "title": "title",
+            "timeStart": "2022-02-27T17:43:35.950Z",
+            "timeEnd": "2022-02-27T17:43:35.950Z",
+            "userId": 242,
+            "tagId": 1,
+            "tag": {
+                "id": 1,
+                "name": "tag1",
+                "colorHexValue": "#FFF"
+            }
+        },
+        {
+            "id": 12,
+            "title": "title",
+            "timeStart": "2022-02-28T02:43:35.950Z",
+            "timeEnd": "2022-02-28T03:43:35.950Z",
+            "userId": 242,
+            "tagId": 1,
+            "tag": {
+                "id": 1,
+                "name": "tag1",
+                "colorHexValue": "#FFF"
+            }
+        }
+    ],
+    "Monday": [
+        {
+            "id": 13,
+            "title": "title",
+            "timeStart": "2022-02-28T17:43:35.950Z",
+            "timeEnd": "2022-02-28T17:43:35.950Z",
+            "userId": 242,
+            "tagId": 1,
+            "tag": {
+                "id": 1,
+                "name": "tag1",
+                "colorHexValue": "#FFF"
+            }
+        },
+        {
+            "id": 7,
+            "title": "title",
+            "timeStart": "2022-03-01T02:43:35.950Z",
+            "timeEnd": "2022-03-01T03:43:35.950Z",
+            "userId": 242,
+            "tagId": 1,
+            "tag": {
+                "id": 1,
+                "name": "tag1",
+                "colorHexValue": "#FFF"
+            }
+        },
+        {
+            "id": 8,
+            "title": "title",
+            "timeStart": "2022-03-01T03:44:35.950Z",
+            "timeEnd": "2022-03-01T04:43:35.950Z",
+            "userId": 242,
+            "tagId": 1,
+            "tag": {
+                "id": 1,
+                "name": "tag1",
+                "colorHexValue": "#FFF"
+            }
+        }
+    ],
+    "Tuesday": [
+        {
+            "id": 10,
+            "title": "title",
+            "timeStart": "2022-03-02T02:44:35.950Z",
+            "timeEnd": "2022-03-02T03:43:35.950Z",
+            "userId": 242,
+            "tagId": 1,
+            "tag": {
+                "id": 1,
+                "name": "tag1",
+                "colorHexValue": "#FFF"
+            }
+        },
+        {
+            "id": 9,
+            "title": "title",
+            "timeStart": "2022-03-02T03:44:35.950Z",
+            "timeEnd": "2022-03-02T04:43:35.950Z",
+            "userId": 242,
+            "tagId": 1,
+            "tag": {
+                "id": 1,
+                "name": "tag1",
+                "colorHexValue": "#FFF"
+            }
+        }
+    ],
+    "Thursday": [
+        {
+            "id": 11,
+            "title": "title",
+            "timeStart": "2022-03-04T02:44:35.950Z",
+            "timeEnd": "2022-03-04T03:43:35.950Z",
+            "userId": 242,
+            "tagId": 1,
+            "tag": {
+                "id": 1,
+                "name": "tag1",
+                "colorHexValue": "#FFF"
+            }
+        }
+    ]
+}

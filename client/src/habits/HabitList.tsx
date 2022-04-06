@@ -1,29 +1,33 @@
 import React from "react";
+import HabitRow from "./HabitList/HabitRow";
 
 function HabitList() {
+const habits = [
+    {
+        name: "Wake up",
+        id: "58dx7123",
+        isCompleted: false,
+        remindTime: "8AM"
+    },
+    {
+        name: "Go to sleep",
+        id: "532x7123",
+        isCompleted: false,
+        remindTime: "8AM"
+    },
+    {
+        name: "Ham",
+        id: "58dx233223",
+        isCompleted: true,
+        remindTime: "8PM"
+    },
+]
+
 return (
-    <div className="w-full rounded border-2 border-slate-400 py-2 px-4 min-h-80 flex flex-col items-center">
-        <h2 className="font-semibold text-lg self-start">Your Habits</h2>
-        <div className="flex gap-4 flex-col w-full sm:flex-row sm:flex-wrap my-2">
-            <div className="w-2/5 outline"> ee</div>
-            <div className="w-2/5 outline"> ee</div>
-            <div className="w-2/5 outline"> ee</div>
-            <div className="w-2/5 outline"> ee</div>
-            <div className="w-2/5 outline"> ee</div>
-            <div className="w-2/5 outline"> ee</div>
-            <div className="w-2/5 outline"> ee</div>
-            <div className="w-2/5 outline"> ee</div>
-            <div className="w-2/5 outline"> ee</div>
-            <div className="w-2/5 outline"> ee</div>
-            <div className="w-2/5 outline"> ee</div>
-            <div className="w-2/5 outline"> ee</div>
-            <div className="w-2/5 outline"> ee</div>
-            <div className="w-2/5 outline"> ee</div>
-            <div className="w-2/5 outline"> ee</div>
-            <div className="w-2/5 outline"> ee</div>
-            <div className="w-2/5 outline"> ee</div>
-            <div className="w-2/5 outline"> ee</div>
-            <div className="w-2/5 outline"> ee</div>  
+    <div className="w-full bg-gray-300 rounded py-2 px-4 min-h-80 flex flex-col items-center">
+        <h2 className="font-semibold text-lg self-start text-gray-600">Your Habits</h2>
+        <div className="flex gap-4 sm:justify-between flex-col self-center items-center w-full sm:flex-row sm:flex-wrap my-2">
+            {habits.map((habit) => ( <HabitRow id={habit.id} name={habit.name} isCompleted={habit.isCompleted} remindTime={habit.remindTime} /> ))}
         </div>
     </div>
 )
