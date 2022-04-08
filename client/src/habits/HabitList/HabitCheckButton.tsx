@@ -2,6 +2,7 @@ import React from "react";
 
 interface IHabitCheckButtonProps {
     isComplete: boolean
+    toggleComplete: void
 }
 
 function HabitCheckButton({isComplete}: IHabitCheckButtonProps) {
