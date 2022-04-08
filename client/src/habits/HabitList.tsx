@@ -18,8 +18,7 @@ const habits = [
     {
         name: "Ham",
         id: "58dx233223",
-        isCompleted: true,
-        remindTime: "8PM"
+        isCompleted: true
     },
 ]
 

@@ -6,11 +6,7 @@ interface IHabitCheckButtonProps {
 
 function HabitCheckButton({isComplete}: IHabitCheckButtonProps) {
     return (
-        <button type="button">
-            {
-                isComplete ? <span className="text-green-200">{isComplete.toString()}</span> : <span className="text-red-200">{isComplete.toString()}</span>
-            }
-        </button>
+        <button type="button" className={`w-4 h-4 rounded ${isComplete ? 'bg-green-400' : 'bg-gray-400'}`} aria-label="toggle habit" />
     )
 }
 
