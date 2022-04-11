@@ -16,6 +16,11 @@ export class HabitsController {
         return this.habitsService.getHabits(userId)
     }
 
+    @Get('/graph')
+    getHabitGraphData(@GetCurrentUserId() userId: number){
+        return this.habitsService.getHabitGraphData(userId)
+    }
+
     @Post()
     createNewHabit(@GetCurrentUserId() userId: number, @Body() dto: NewHabitDto) {
         return this.habitsService.createNewHabit(userId, dto)
@@ -32,8 +37,8 @@ export class HabitsController {
     }
 
     @Post('/do')
-    doHabit(@Body() dto: DoHabitDto) {
-        return this.habitsService.doHabit(dto)
+    doHabit(@GetCurrentUserId() userId: number, @Body() dto: DoHabitDto) {
+        return this.habitsService.doHabit(userId, dto)
     }
 
     @Delete('/undo')
