@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Habit } from '@prisma/client';
+import { endOfToday, startOfDay, startOfToday } from 'date-fns';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { DeleteHabitDto } from './dto/deleteHabit.dto';
+import { DoHabitDto } from './dto/doHabit.dto';
 import { NewHabitDto } from './dto/newHabit.dto';
+import { UndoHabitDto } from './dto/undoHabit.dto';
 import { UpdateHabitDto } from './dto/updateHabit.dto';
 
 @Injectable()
@@ -80,15 +84,44 @@ export class HabitsService {
         return updatedHabit
     }
 
-    async deleteHabit(habitId: number) {
+    async deleteHabit(dto: DeleteHabitDto) {
+        await this.prisma.habit.delete({
+            where: {
+                id: dto.id
+            }
+        })
 
+        return true
     }
 
-    async doHabit(userId: number, habitId: number) {
-
+    async doHabit(dto: DoHabitDto) {
+        await this.prisma.completedHabit.create({
+            data: {
+                habit: {
+                    connect: {
+                        id: dto.id
+                    }
+                },
+                dateCompleted: new Date()
+            }
+        })
     }
 
-    async undoHabit(habitId: number) {
-        
+    async undoHabit(dto: UndoHabitDto) {
+        // get the beginning and end values of todays timestamp
+        // to be used for filtering the query
+        // this feels bad
+        const startOfDay = startOfToday()
+        const endOfDay = endOfToday()
+
+        await this.prisma.completedHabit.deleteMany({
+            where: {
+                habitId: dto.id,
+                dateCompleted: {
+                    gte: startOfDay,
+                    lt: endOfDay
+                }
+            }
+        })
     }
 }

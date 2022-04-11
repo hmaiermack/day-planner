@@ -77,10 +77,11 @@ model Habit {
 
 model CompletedHabit {
   id Int @id @default(autoincrement())
-  dateCompleted DateTime
+  dateCompleted DateTime @default(now())
 
   habit Habit @relation(fields: [habitId], references: [id])
   habitId Int
 
+  @@index([dateCompleted])
   @@map("completedHabits")
 }
