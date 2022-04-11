@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Habit } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { NewHabitDto } from './dto/newHabit.dto';
+import { UpdateHabitDto } from './dto/updateHabit.dto';
 
 @Injectable()
 export class HabitsService {
@@ -47,6 +48,7 @@ export class HabitsService {
                 },
                 name: dto.name,
                 habitDays: dto.habitDays,
+                remindDays: []
             }
 
         })
@@ -56,6 +58,26 @@ export class HabitsService {
 
     async updateHabit(dto: UpdateHabitDto): Promise<Habit> {
 
+        const habit = await this.prisma.habit.findUnique({
+            where: {
+                id: dto.id
+            }
+        })
+
+        const updatedHabit = await this.prisma.habit.update({
+            where: {
+                id: dto.id
+            },
+            data: {
+                name: dto.name ? dto.name : habit.name,
+                habitDays: dto.habitDays ? dto.habitDays : habit.habitDays,
+                remindTime: dto.remindTime ? dto.remindTime : habit.remindTime,
+                remindDays: dto.remindDays ? dto.remindDays : habit.remindDays
+
+            }
+        })
+
+        return updatedHabit
     }
 
     async deleteHabit(habitId: number) {

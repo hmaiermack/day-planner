@@ -1,11 +1,11 @@
 import {
+  ArrayContains,
+  ArrayMaxSize,
+  ArrayMinSize,
     IsArray,
     IsNotEmpty,
     IsOptional,
     IsString,
-    MaxLength,
-    MinLength,
-    ValidateNested,
   } from 'class-validator';
   
   export class NewHabitDto {
@@ -15,9 +15,8 @@ import {
 
     @IsNotEmpty()
     @IsArray()
-    @MinLength(7)
-    @MaxLength(7)
-    @ValidateNested()
+    @ArrayMinSize(7)
+    @ArrayMaxSize(7)
     habitDays: boolean[]
 
     @IsOptional()
@@ -26,9 +25,8 @@ import {
 
     @IsOptional()
     @IsArray()
-    @MinLength(7)
-    @MaxLength(7)
-    @ValidateNested()
+    @ArrayMinSize(7)
+    @ArrayMaxSize(7)
     remindDays?: boolean[]
   }
   

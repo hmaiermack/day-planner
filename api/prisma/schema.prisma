@@ -70,14 +70,17 @@ model Habit {
   user User @relation(fields: [userId], references: [id])
   userId Int
 
-  completedHabits CompletedHabits[]
+  completedHabits CompletedHabit[]
 
+  @@map("habits")
 }
 
-model CompletedHabits {
+model CompletedHabit {
   id Int @id @default(autoincrement())
   dateCompleted DateTime
 
   habit Habit @relation(fields: [habitId], references: [id])
   habitId Int
+
+  @@map("completedHabits")
 }

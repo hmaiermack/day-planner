@@ -1,6 +1,7 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Post, Put } from '@nestjs/common';
 import { GetCurrentUserId } from 'src/common/decorators';
 import { NewHabitDto } from './dto/newHabit.dto';
+import { UpdateHabitDto } from './dto/updateHabit.dto';
 import { HabitsService } from './habits.service';
 
 @Controller('habits')
@@ -17,7 +18,7 @@ export class HabitsController {
         return this.habitsService.createNewHabit(userId, dto)
     }
 
-    @Post('/update')
+    @Put('/update')
     updateHabit(@Body() dto: UpdateHabitDto) {
         return this.habitsService.updateHabit(dto)
     }
@@ -28,7 +29,7 @@ export class HabitsController {
     }
 
     @Post('/do')
-    doHabit(@GetCurrentUserId() userId: number, @Body habitId: number) {
+    doHabit(@GetCurrentUserId() userId: number, @Body() habitId: number) {
         return this.habitsService.doHabit(userId, habitId)
     }
 
