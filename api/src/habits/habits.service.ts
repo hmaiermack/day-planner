@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Habit } from '@prisma/client';
+import { CompletedHabit, Habit } from '@prisma/client';
 import { eachDayOfInterval, endOfToday, format, isSameDay, parseISO, startOfDay, startOfToday, subDays, subMonths } from 'date-fns';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { DeleteHabitDto } from './dto/deleteHabit.dto';
@@ -7,13 +7,9 @@ import { DoHabitDto } from './dto/doHabit.dto';
 import { NewHabitDto } from './dto/newHabit.dto';
 import { UndoHabitDto } from './dto/undoHabit.dto';
 import { UpdateHabitDto } from './dto/updateHabit.dto';
+import { Day } from './types';
 
 
-export interface Day {
-    date: string;
-    count: number;
-    level: 0 | 1 | 2 | 3 | 4
-}
 
 @Injectable()
 export class HabitsService {
@@ -162,18 +158,16 @@ export class HabitsService {
         return updatedHabit
     }
 
-    async deleteHabit(dto: DeleteHabitDto) {
+    async deleteHabit(dto: DeleteHabitDto): Promise<void> {
         await this.prisma.habit.delete({
             where: {
                 id: dto.id
             }
         })
-
-        return true
     }
 
-    async doHabit(userId: number, dto: DoHabitDto) {
-        await this.prisma.completedHabit.create({
+    async doHabit(userId: number, dto: DoHabitDto): Promise<CompletedHabit> {
+        const completedHabit = await this.prisma.completedHabit.create({
             data: {
                 habit: {
                     connect: {
@@ -188,11 +182,13 @@ export class HabitsService {
                 dateCompleted: new Date()
             }
         })
+
+        return completedHabit
     }
 
-    async undoHabit(dto: UndoHabitDto) {
+    async undoHabit(dto: UndoHabitDto): Promise<void> {
         // get the beginning and end values of todays timestamp
-        // to be used for filtering the query
+        // to be used for filtering the query to determine which habit to "undo"
         // this feels bad
         const startOfDay = startOfToday()
         const endOfDay = endOfToday()
