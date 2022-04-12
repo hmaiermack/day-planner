@@ -7,7 +7,7 @@ import { DoHabitDto } from './dto/doHabit.dto';
 import { NewHabitDto } from './dto/newHabit.dto';
 import { UndoHabitDto } from './dto/undoHabit.dto';
 import { UpdateHabitDto } from './dto/updateHabit.dto';
-import { Day } from './types';
+import { Day, GraphResponse } from './types';
 
 
 
@@ -25,7 +25,7 @@ export class HabitsService {
         return habits
     }
 
-    async getHabitGraphData(userId: number): Promise<Day[]> {
+    async getHabitGraphData(userId: number): Promise<GraphResponse> {
 
         const habits = await this.prisma.habit.findMany({
             where: {
@@ -47,12 +47,12 @@ export class HabitsService {
         const intervalArray = eachDayOfInterval({start: intervalStart, end: intervalEnd})
         console.log(intervalArray[0])
         
-        const graphData: Day[] = []
+        const intervalData: Day[] = []
         
-        //populate the graphData with proplerly formatted date
+        //populate the intervalData with proplerly formatted date
         intervalArray.forEach(date => {
             let dateString = format(date, "yyyy-MM-dd")
-            graphData.push({
+            intervalData.push({
                 date: dateString,
                 count: 0,
                 level: 0
@@ -62,7 +62,9 @@ export class HabitsService {
         // console.log({habits})
         console.log(parseInt(format(parseISO('2022-04-10'), "i")))
 
-        graphData.forEach(item => {
+        let adherencePercentage: number
+
+        intervalData.forEach(item => {
             const weekday = parseInt(format(parseISO(item.date), "i"))
             let completedCount = 0
             
@@ -78,7 +80,7 @@ export class HabitsService {
                 // })
                 if(isSameDay(parseISO(item.date), completedHabit.dateCompleted)) completedCount += 1
             })
-            const adherencePercentage = completedCount / item.count
+            adherencePercentage = completedCount / item.count
             
             if(adherencePercentage == 1) {
                 item.level = 4
@@ -93,7 +95,7 @@ export class HabitsService {
             }
         })
         
-        return graphData
+        return {intervalData, adherencePercentage}
     }
 
     async createNewHabit(userId: number, dto: NewHabitDto): Promise<Habit> {
