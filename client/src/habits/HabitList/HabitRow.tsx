@@ -6,7 +6,6 @@ interface IHabitRowProps {
     name: string,
     remindTime?: string,
     isCompleted: boolean,
-    toggleComplete: void
 }
 
 function HabitRow({
@@ -21,7 +20,7 @@ function HabitRow({
             </span>
         </div>
         <div className="flex items-center">
-            <HabitCheckButton isComplete={isCompleted} toggleComplete />
+            <HabitCheckButton isComplete={isCompleted} />
             <button type="button" className="ml-1 text-gray-400">
                     <svg className="h-4 w-4 fill-gray-500" viewBox="0 0 20 20"><path d="M10 12a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0-6a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 12a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" /></svg>
             </button>
