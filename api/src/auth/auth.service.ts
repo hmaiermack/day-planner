@@ -23,9 +23,10 @@ export class AuthService {
         },
       })
       .catch((e) => {
+        console.log(e)
         if (e instanceof PrismaClientKnownRequestError) {
           if (e.code === 'P2002') {
-            throw new ForbiddenException('Incorrect credentials');
+            throw new ForbiddenException('Email already in use.');
           } else {
             throw e;
           }

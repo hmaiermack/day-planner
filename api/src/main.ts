@@ -17,6 +17,7 @@ async function bootstrap() {
   // ]
   const reflector = new Reflector();
   app.useGlobalGuards(new accessTokenGuard(reflector));
+  app.enableCors()
   await app.listen(3333);
 }
 bootstrap();
