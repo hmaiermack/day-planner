@@ -1,4 +1,5 @@
 import HabitContainer from 'habits/HabitContainer';
+import LogIn from 'pages/LogIn';
 import SignUp from 'pages/SignUp';
 import React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -13,6 +14,7 @@ function App() {
           </div>
        <Routes>
           <Route path='signup' element={<SignUp />} />
+          <Route path='login' element={<LogIn />} />
        </Routes>
       </QueryClientProvider>
   );
