@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup'
@@ -7,13 +7,21 @@ import { useNavigate, Link } from 'react-router-dom';
 import FormInput from "components/forms/FormInput";
 import GradientButton from "components/shared/GradientButton";
 import { publicFetch } from "utils";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import FormSuccess from "components/forms/FormSuccess";
+import { AuthContext } from "context/AuthContext";
+import { decodeToken, useJwt } from "react-jwt";
 
 YupPassword(yup)
 
+interface IResponseData {
+    access_token: string,
+    refresh_token: string
+}
+
 
 const SignUp = () => {
+    const authContext = useContext(AuthContext)
     let navigate = useNavigate()
 
     const [btnLoading, setBtnLoading] = useState(false)
@@ -50,10 +58,18 @@ const SignUp = () => {
         }
         try {
             setBtnLoading(true)
-            const { data } = await publicFetch.post(
+            const {data} = await publicFetch.post<IResponseData>(
                 'auth/local/signup',
                 credentials
             )
+            let token = data.access_token
+            let decoded: any = decodeToken(token)
+            
+            authContext?.setAuthState({
+                AT: data.access_token,
+                RT: data.refresh_token,
+                expiresAt: decoded.exp
+            })
             setSignupSuccess(true)
             // this is where we navigate back
             // give some time to see success message
