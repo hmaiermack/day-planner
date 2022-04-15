@@ -8,6 +8,7 @@ import FormInput from "components/forms/FormInput";
 import GradientButton from "components/shared/GradientButton";
 import { publicFetch } from "utils";
 import axios from "axios";
+import FormSuccess from "components/forms/FormSuccess";
 
 YupPassword(yup)
 
@@ -16,6 +17,7 @@ const SignUp = () => {
     let navigate = useNavigate()
 
     const [btnLoading, setBtnLoading] = useState(false)
+    const [signUpSuccess, setSignupSuccess] = useState(false)
 
     interface IFormInputs {
         Email: string,
@@ -52,7 +54,12 @@ const SignUp = () => {
                 'auth/local/signup',
                 credentials
             )
-            console.log(data)
+            setSignupSuccess(true)
+            // this is where we navigate back
+            // give some time to see success message
+            setTimeout(() => {
+                navigate('/dashboard')
+            }, 700)
         } catch (error) {
             setBtnLoading(false)
             if(axios.isAxiosError(error) && error.response?.data.message.includes('Email')) {
@@ -72,7 +79,8 @@ const SignUp = () => {
                     <div className="text-xl font-medium text-gray-600 m-2 text-center">Sign Up</div>
                 </div>
                 <div className="max-w-md w-full mx-auto bg-white p-8 border border-gray-600 rounded">
-                    <form onSubmit={handleSubmit(async (formData) => await submitHandler(formData))} className="space-y-6">
+                    <form onSubmit={handleSubmit(async (formData) => submitHandler(formData))} className="space-y-6">
+                        {signUpSuccess && <FormSuccess text="Sign up successful!" />}
                         <FormInput type="text" label="Email" register={register} errors={errors.Email} required={true}>
                             {errors.Email && errors.Email?.message && <span>{errors.Email.message}</span>}
                         </FormInput>

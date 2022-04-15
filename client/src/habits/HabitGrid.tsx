@@ -24,7 +24,6 @@ function HabitGrid () {
     const totalAdherence = 87
     // first day three months prior on the first of the month
     const startOfGrid = format(subMonths(Date.now(), 3), "yyyy-MM-dd")
-    console.log({startOfGrid})
     
 
     const days: Day[] = [
